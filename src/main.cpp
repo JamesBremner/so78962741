@@ -54,23 +54,62 @@ void link()
     }
 }
 
-void makeUnique()
+bool checkUnique()
 {
-    std::vector<std::string> vus;
-    char vc[] = {'A', 'B', 'C'};
+    for (int i1 = 0; i1 < N; i1++)
+        for (int i2 = i1 + 1; i2 < N; i2++)
+        {
+            if (vcodes[i1] == vcodes[i2])
+            {
+                std::cout << i1 << " == " << i2 << " " << vcodes[i1] << "\n";
+                return false;
+            }
+        }
+    std::cout << "all codes are unique\n";
+    return true;
+}
+
+std::vector<std::string> permute(std::vector<std::string> &base)
+{
+    std::vector<std::string> ret;
     do
     {
-        // std::cout << vc[0] << ' ' << vc[1] << ' ' << vc[2] << '\n';
-        std::string us = "xxx";
-        us[0] = vc[0];
-        us[1] = vc[1];
-        us[2] = vc[2];
-        vus.push_back(us);
-    } while (std::next_permutation(vc, vc + 3));
-    for (int i = 0; i < 2*N; i++)
+        std::string us = "";
+        for( int i = 0; i < base.size(); i++ )
+            us += base[i];
+        std::cout << us << " ";
+        ret.push_back(us);
+    } while (std::next_permutation(base.begin(), base.end()));
+    std::cout << "\n";
+    return ret;
+}
+
+void makeUnique()
+{
+    std::vector<std::string> base1 = { "A","B","C"};
+    std::vector<std::string> vus;
+
+    if (vcodes.size() <= 5)
+    {
+
+        vus = permute(base1);
+    }
+    else
+    {
+        // need more unique codes
+        // do a double permutation
+        
+        vus = permute(base1);
+        vus = permute( vus );
+    }
+
+    for (int i = 0; i < 2 * N; i++)
     {
         vcodes[i] += vus[i];
     }
+
+    if (!checkUnique())
+        exit(1);
 }
 
 void displayCodes()
@@ -81,7 +120,7 @@ void displayCodes()
 
 main()
 {
-    generate(3);
+    generate(9);
     zerobase();
     link();
     makeUnique();
