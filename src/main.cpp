@@ -9,6 +9,7 @@ int N;
 std::vector<std::string> vcodes;
 std::vector<std::pair<int, int>> vlinks;
 
+// Generate example from question
 void generate(int n)
 {
     vcodes.clear();
@@ -66,10 +67,9 @@ void makeUnique()
         us[2] = vc[2];
         vus.push_back(us);
     } while (std::next_permutation(vc, vc + 3));
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < 2*N; i++)
     {
         vcodes[i] += vus[i];
-        vcodes[N + i] += vus[i];
     }
 }
 
